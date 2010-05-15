@@ -50,22 +50,17 @@ __license__ = ("MIT", )
 class Amnesia:
     def __init__(self, module, appname):
         self.wsgi_app = {"module": module, "app": appname}
-        self._import = __builtins__.__import__
-        __builtins__.__import__ = self._new_import
-        self.imported_modules = set()
-    def _new_import(self, name, globals_=None, locals_=None, fromlist=(), level=-1):
-        module = self._import(name, globals_, locals_, fromlist, level)
-        self.imported_modules.add(name)
-        return module
+        self.existing_modules = set(sys.modules.keys())
     def _reload(self):
-        for module in self.imported_modules:
-            del(sys.modules[module])
-        self.imported_modules = set()
+        modules = list(sys.modules.keys())
+        for module in modules:
+            if module not in self.existing_modules:
+                del(sys.modules[module])
     def __call__(self, environ, start_response):
         module = self.wsgi_app["module"]
         appname = self.wsgi_app["app"]
         self._reload()
-        self._new_import(module, globals(), locals(), (appname,))
+        __import__(module, globals(), locals(), (appname,))
         app = sys.modules[module].__getattribute__(appname)
         return app.__call__(environ, start_response)
 
