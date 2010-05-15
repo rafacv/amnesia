@@ -28,16 +28,16 @@
     running on the shell like `amnesia mymodule my_wsgi_app`
     or as a WSGI Middleware as follows:
 
-    >>> from wsgiref import simple_server
+    >>> from wsgiref.simple_server import make_server
     >>> from amnesia import Amnesia
     >>> 
     >>> my_reloading_app = Amnesia("mymodule", "wsgi_app")
     >>> 
     >>> if __name__ == "__main__":
-    >>>     httpd = simple_server("", 8080, my_reloading_app)
-    >>>     httpd.serve_forever()
+    >>>     httpd = make_server("", 8080, my_reloading_app)
     >>>     print("Running on localhost:8080...")
     >>>     print("Modify your app and refresh your browser's page.")
+    >>>     httpd.serve_forever()
     >>> 
 """
 
