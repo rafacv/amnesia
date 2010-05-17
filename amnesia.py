@@ -83,17 +83,7 @@ def usage():
         Output a short summary of available command line options.
     """)
 
-if __name__ == "__main__":
-    from wsgiref.simple_server import make_server
-
-    if "-v" in sys.argv:
-        version = ".".join([str(vparts) for vparts in __version__])
-        print("Amnesia {0}".format(version))
-        sys.exit()
-    elif "-h" in sys.argv or len(sys.argv) < 3:
-        usage()
-        sys.exit()
-
+def main():
     module, app = sys.argv[1:3]
     if "-p" in sys.argv:
         index = sys.argv.index("-p") + 1
@@ -115,3 +105,18 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nJust forgot what I was about to do...")
         print("Shutting down then.")
+
+if __name__ == "__main__":
+    from wsgiref.simple_server import make_server
+
+    if "-v" in sys.argv:
+        version = ".".join(map(str, __version__))
+        print("Amnesia {0}".format(version))
+    elif "-h" in sys.argv or len(sys.argv) < 3:
+        usage()
+    else:
+        try:
+            main()
+        except IndexError:
+            # Raised when commandline options are not correct
+            usage()
