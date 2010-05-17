@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2010 Rafael Carlos Valverde
@@ -66,57 +65,3 @@ class Amnesia:
         __import__(module, globals(), locals(), (appname,))
         app = sys.modules[module].__getattribute__(appname)
         return app.__call__(environ, start_response)
-
-def usage():
-    """Print usage instructions to the standard output """
-    print("""Usage: amnesia mymodule my_wsgi_app [-s hostname] [-p port] [-h]
-
-    mymodule
-        The name of the Python module where your WSGI app is defined.
-    my_wsgi_app
-        The name of the WSGI app. It should be a WSGI compliant callable.
-    -s hostname
-        Set the hostname to serve the application. Defaults to localhost.
-    -p portno
-        Set the port number. Defaults to 8080.
-    -h
-        Output a short summary of available command line options.
-    """)
-
-def main():
-    module, app = sys.argv[1:3]
-    if "-p" in sys.argv:
-        index = sys.argv.index("-p") + 1
-        port = int(sys.argv[index])
-    else:
-        port = 8080
-    if "-s" in sys.argv:
-        index = sys.argv.index("-p") + 1
-        hostname = sys.argv[index]
-    else:
-        hostname = "localhost"
-
-    amnesia_app = Amnesia(module, app)
-    httpd = make_server(hostname, port, amnesia_app)
-    try:
-        print("Serving on {0}:{1}...".format(hostname, port))
-        while True:
-            httpd.handle_request()
-    except KeyboardInterrupt:
-        print("\nJust forgot what I was about to do...")
-        print("Shutting down then.")
-
-if __name__ == "__main__":
-    from wsgiref.simple_server import make_server
-
-    if "-v" in sys.argv:
-        version = ".".join(map(str, __version__))
-        print("Amnesia {0}".format(version))
-    elif "-h" in sys.argv or len(sys.argv) < 3:
-        usage()
-    else:
-        try:
-            main()
-        except IndexError:
-            # Raised when commandline options are not correct
-            usage()
