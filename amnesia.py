@@ -45,9 +45,12 @@ import sys
 
 __author__ = ("Rafael Carlos Valverde", "rafael@codeazur.com.br")
 __version__ = (0, 1, 0)
-__license__ = ("MIT", )
+__license__ = ("MIT",)
 
 class Amnesia:
+    """Track imported modules after instantiation and reload them
+        at each request.
+    """
     def __init__(self, module, appname):
         self.wsgi_app = {"module": module, "app": appname}
         self.existing_modules = set(sys.modules.keys())
@@ -64,17 +67,49 @@ class Amnesia:
         app = sys.modules[module].__getattribute__(appname)
         return app.__call__(environ, start_response)
 
+def usage():
+    """Print usage instructions to the standard output """
+    print("""Usage: amnesia mymodule my_wsgi_app [-s hostname] [-p port] [-h]
+
+    mymodule
+        The name of the Python module where your WSGI app is defined.
+    my_wsgi_app
+        The name of the WSGI app. It should be a WSGI compliant callable.
+    -s hostname
+        Set the hostname to serve the application. Defaults to localhost.
+    -p portno
+        Set the port number. Defaults to 8080.
+    -h
+        Output a short summary of available command line options.
+    """)
+
 if __name__ == "__main__":
     from wsgiref.simple_server import make_server
 
-    if len(sys.argv) != 3:
-        print(__doc__)
+    if "-v" in sys.argv:
+        version = ".".join([str(vparts) for vparts in __version__])
+        print("Amnesia {0}".format(version))
         sys.exit()
-    module, app = sys.argv[1:]
+    elif "-h" in sys.argv or len(sys.argv) < 3:
+        usage()
+        sys.exit()
+
+    module, app = sys.argv[1:3]
+    if "-p" in sys.argv:
+        index = sys.argv.index("-p") + 1
+        port = int(sys.argv[index])
+    else:
+        port = 8080
+    if "-s" in sys.argv:
+        index = sys.argv.index("-p") + 1
+        hostname = sys.argv[index]
+    else:
+        hostname = "localhost"
+
     amnesia_app = Amnesia(module, app)
-    httpd = make_server("", 8080, amnesia_app)
+    httpd = make_server(hostname, port, amnesia_app)
     try:
-        print("Serving on localhost:8080…")
+        print("Serving on {0}:{1}...".format(hostname, port))
         while True:
             httpd.handle_request()
     except KeyboardInterrupt:
