@@ -10,20 +10,21 @@
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #18237c;
+  		background-color: #fff;
 		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
+  		color: #000;
     }
     #container {
       margin: 0 auto;
       width: 700px;
     }
-		h1 { font-size: 3.8em; color: #e7dc83; margin-bottom: 3px; }
+		h1 { font-size: 3.8em; color: #003399; margin-bottom: 3px; }
 		h1 .small { font-size: 0.4em; }
 		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #e7dc83; }
-    h3 { text-align: center; color: #e7dc83; }
-    a { color: #e7dc83; }
+		h2 { font-size: 1.5em; color: #0055dd; }
+    h3 { text-align: center; color: #0055dd; }
+    a { color: #9966ff; }
+    h1 a { color: #003399; text-decoration: underline; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
 		pre { background: #000; color: #fff; padding: 15px;}
@@ -52,37 +53,36 @@
       Amnesia eases web development by reloading WSGI apps and imported modules before each request.
     </div>
 
-    <p>
-Amnesia reloads modules on-the-fly as an aid for development
-of WSGI compliant applications.
-Amnesia is meant to be used like a standalone executable,
-running on the shell like `amnesia mymodule my_wsgi_app`
-or as a WSGI Middleware as follows:
+    <p>Amnesia reloads modules on-the-fly as an aid for development of WSGI compliant applications.<br>
+    <p>Amnesia is meant to be used like a standalone executable, running on the shell like:</p>
+    <pre>$ amnesia mymodule my_wsgi_app [-p portno] [-s hostname]</pre>
+    <p>or as a WSGI Middleware as follows:</p>
 
-    >>> from wsgiref.simple_server import make_server
-    >>> from amnesia import Amnesia
-    >>> 
-    >>> my_reloading_app = Amnesia("mymodule", "wsgi_app")
-    >>> 
-    >>> if __name__ == "__main__":
-    >>>     httpd = make_server("", 8080, my_reloading_app)
-    >>>     print("Running on localhost:8080...")
-    >>>     print("Modify your app and refresh your browser's page.")
-    >>>     httpd.serve_forever()
-    >>> 
-</p><h2>Install</h2>
-<p>`easy_install amnesia`
-or
-    curl http://github.com/rafaelcv/amnesia/tarball/v0.2.0 -o amnesia.tar.gz -Lo amnesia.tar.gz
-    tar xzf amnesia.tar.gz && cd amnesia
-    python setup.py install
-</p>
+    <pre>>>> from wsgiref.simple_server import make_server
+>>> from amnesia import Amnesia
+>>> 
+>>> my_reloading_app = Amnesia("mymodule", "wsgi_app")
+>>> 
+>>> if __name__ == "__main__":
+>>>     httpd = make_server("", 8080, my_reloading_app)
+>>>     print("Running on localhost:8080...")
+>>>     print("Modify your app and refresh your browser's page.")
+>>>     httpd.serve_forever()
+>>> </pre>
+
+<h2>Install</h2>
+
+  <pre>$ easy_install amnesia</pre>
+  <p>or</p>
+  <pre>$ curl http://github.com/rafaelcv/amnesia/tarball/v0.2.0 -Lo amnesia.tar.gz
+$ tar xzf amnesia.tar.gz
+$ cd amnesia
+$ python setup.py install</pre>
+
 <h2>License</h2>
-<p>MIT</p>
+<p><a href="http://www.opensource.org/licenses/mit-license.php">MIT</a></p>
 <h2>Authors</h2>
-<p>Rafael Carlos Valverde (rafael at codeazur.com.br)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Rafael Valverde (rafael at codeazur.com.br)<br/>      </p>
+<p>Rafael Carlos Valverde (rafael at codeazur.com.br)</p>
 
 
     <h2>Download</h2>
