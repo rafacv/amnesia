@@ -30,5 +30,6 @@ or as a WSGI Middleware as follows:
 Meta
 ------
 * Author: Rafael Carlos Valverde, rafael@codeazur.com.br
+* License: [MIT](http://www.opensource.org/licenses/mit-license.php)
 * Home: http://rafaelcv.github.com/amnesia
 * Bugs and other issues: http://github.com/rafaelcv/amnesia/issues
