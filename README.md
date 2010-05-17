@@ -1,7 +1,7 @@
 Amnesia
 =======
 
-Inspired by [shotgun](http://github.com/rtomayko/shotgun) and [memento](http://pyunit.sourceforge.net/notes/reloading.html), Amnesia is a tool that aids the development of WSGI compliant applications reloading modules on each request.
+Inspired by [shotgun](http://github.com/rtomayko/shotgun) and [memento](http://pypi.python.org/pypi/memento/0.2), Amnesia is a tool that aids the development of WSGI compliant applications reloading modules on each request.
 
 Restart your webserver no more.
 
